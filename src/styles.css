@@ -1,1 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --color-background: #200847;
+    --color-snake: #00c9aa;
+    --color-light-purple: #d4affe;
+    --color-light-vanilla: #fffade;
+    --board-width: 40em;
+}
+
+body {
+    position: relative;
+    float: left;
+    width: 100%;
+    background-color: var(--color-background);
+    color: var(--color-light-vanilla);
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+app-root {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+app-header,
+app-board,
+app-footer {
+    position: relative;
+    float: left;
+    width: var(--board-width);
+}
+
+@media screen and (max-width: 650px) {
+    :root {
+        --board-width: 100%;
+    }
+}

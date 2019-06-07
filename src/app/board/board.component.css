@@ -1,0 +1,30 @@
+* {
+    user-select: none;
+}
+
+.board {
+    position: relative;
+    float: left;
+    width: 100%;
+}
+.row {
+    position: relative;
+    float: left;
+    width: 100%;
+}
+.cell {
+    position: relative;
+    float: left;
+    outline: 1px solid white;
+    width: calc(100% / 18);
+    height: 20px;
+}
+.game-over {
+    background-color: red;
+}
+.snake {
+    background-color: green;
+}
+.fruit {
+    background-color: yellow;
+}
