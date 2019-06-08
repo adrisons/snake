@@ -1,42 +1,56 @@
 import { Injectable } from '@angular/core';
+import { Subject, Observable } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class GameService {
-    private gameOver = 'game_over';
+    private active = new Subject<boolean>();
+    private active$ = this.active.asObservable();
+
     private bestScore = 'best_score';
 
-    public endGame() {
-        this.setToLocalStorage(this.gameOver, true);
+    private scoreNum: number = 0;
+    private score = new Subject<number>();
+    private score$ = this.score.asObservable();
+
+    endGame() {
+        this.active.next(false);
+        this.getScore()
+            .pipe(take(1))
+            .subscribe(n => {
+                const bestScore = this.getBestScoreFromStorage() + n;
+                this.updateBestScore(bestScore);
+            });
     }
 
-    public startGame() {
-        this.setToLocalStorage(this.gameOver, false);
+    startGame() {
+        this.active.next(true);
+        this.score.next(this.scoreNum);
     }
 
-    public isGameOver(): boolean {
-        const gameOver = this.getFromLocalStorage(this.gameOver);
-        if (gameOver == null) {
-            this.endGame();
-            return false;
-        }
-        return gameOver;
+    isGameOver(): Observable<boolean> {
+        return this.active$.pipe(map(a => !a));
     }
 
-    public addScore(n: number) {
-        const store = this.getScore();
-        this.updateScore(store + n);
+    getScore(): Observable<number> {
+        return this.score$;
     }
 
-    public updateScore(s: number) {
-        const score = this.getScore();
+    addScore(n: number) {
+        this.scoreNum += n;
+        this.score.next(this.scoreNum);
+    }
+
+    private updateBestScore(s: number) {
+        const score = this.getBestScoreFromStorage();
         if (score < s) {
             this.setToLocalStorage(this.bestScore, s);
         }
     }
 
-    public getScore(): number {
+    private getBestScoreFromStorage(): number {
         const score = this.getFromLocalStorage(this.bestScore);
         if (score == null) {
             this.initScore(0);

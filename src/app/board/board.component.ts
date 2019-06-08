@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { GameService } from '../game.service';
 import {
     Board,
@@ -9,13 +9,16 @@ import {
     FruitCell
 } from '../model/board.model';
 import { BOARD_SIZE, CONTROLS } from '../model/constants';
+import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
     selector: 'app-board',
     templateUrl: './board.component.html',
     styleUrls: ['./board.component.css']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
+    gameOver: boolean;
     board: Board;
     private interval = 500;
     private snake = {
@@ -23,7 +26,8 @@ export class BoardComponent implements OnInit {
         parts: []
     };
     tempDirection = CONTROLS.UP;
-
+    private destroy = new Subject<boolean>();
+    private destroy$ = this.destroy.asObservable();
     @HostListener('window:keydown', ['$event']) onkeydown(
         event: KeyboardEvent
     ) {
@@ -51,10 +55,17 @@ export class BoardComponent implements OnInit {
         event.stopPropagation();
     }
 
-    constructor(private gameService: GameService) {}
+    constructor(private gameService: GameService) {
+        this.board = this.buildBoard(BOARD_SIZE, BOARD_SIZE);
+        this.gameService
+            .isGameOver()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(over => {
+                this.gameOver = over;
+            });
+    }
 
     ngOnInit() {
-        this.board = this.buildBoard(BOARD_SIZE, BOARD_SIZE);
         this.snake.parts = this.findSnake();
         this.resetFruit();
         setTimeout(() => {
@@ -62,8 +73,8 @@ export class BoardComponent implements OnInit {
         }, this.interval);
     }
 
-    isGameOver() {
-        return this.gameService.isGameOver();
+    ngOnDestroy() {
+        this.destroy.next(true);
     }
 
     private buildBoard(rows: number, cols: number): Board {
@@ -94,9 +105,12 @@ export class BoardComponent implements OnInit {
 
     move() {
         const newHead = this.repositionHead();
-
+        if (this.boardCollision(newHead.y, newHead.x)) {
+            this.gameService.endGame();
+            return;
+        }
         const cell = this.board.data[newHead.y][newHead.x];
-        if (cell.taken || this.boardCollision(cell)) {
+        if (cell && cell.taken) {
             this.gameService.endGame();
             return;
         }
@@ -114,19 +128,14 @@ export class BoardComponent implements OnInit {
         this.snake.direction = this.tempDirection;
 
         setTimeout(() => {
-            if (!this.gameService.isGameOver()) {
+            if (!this.gameOver) {
                 this.move();
             }
         }, this.interval);
     }
 
-    private boardCollision(part: any): boolean {
-        return (
-            part.x === BOARD_SIZE ||
-            part.x === -1 ||
-            part.y === BOARD_SIZE ||
-            part.y === -1
-        );
+    private boardCollision(x: number, y: number): boolean {
+        return x === BOARD_SIZE || x === -1 || y === BOARD_SIZE || y === -1;
     }
 
     private repositionHead(): any {

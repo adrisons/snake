@@ -1,10 +1,9 @@
-<div class="board">
+<div class="board" [ngClass]="{ 'game-over': gameOver }">
     <div class="row" *ngFor="let row of board.data; let i = index">
         <div
             *ngFor="let cell of row; let j = index"
             class="cell"
             [ngClass]="{
-                'game-over': isGameOver(),
                 snake: isSnake(cell),
                 fruit: isFruit(cell)
             }"
