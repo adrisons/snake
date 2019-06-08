@@ -1,33 +1,32 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
-import { take, map } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class GameService {
-    private active = new Subject<boolean>();
+    private active = new BehaviorSubject<boolean>(false);
     private active$ = this.active.asObservable();
 
-    private bestScore = 'best_score';
+    private bestScoreKey = 'best_score';
+    private bestScoreNum = 0;
+    private bestScore = new BehaviorSubject<number>(this.bestScoreNum);
+    private bestScore$ = this.bestScore.asObservable();
 
-    private scoreNum: number = 0;
-    private score = new Subject<number>();
+    private scoreNum = 0;
+    private score = new BehaviorSubject<number>(this.scoreNum);
     private score$ = this.score.asObservable();
 
     endGame() {
         this.active.next(false);
-        this.getScore()
-            .pipe(take(1))
-            .subscribe(n => {
-                const bestScore = this.getBestScoreFromStorage() + n;
-                this.updateBestScore(bestScore);
-            });
+        this.updateBestScore();
     }
 
     startGame() {
         this.active.next(true);
-        this.score.next(this.scoreNum);
+        this.score.next(0);
+        this.bestScore.next(this.bestScoreNum);
     }
 
     isGameOver(): Observable<boolean> {
@@ -43,25 +42,21 @@ export class GameService {
         this.score.next(this.scoreNum);
     }
 
-    private updateBestScore(s: number) {
-        const score = this.getBestScoreFromStorage();
-        if (score < s) {
-            this.setToLocalStorage(this.bestScore, s);
+    getBestScore(): Observable<number> {
+        return this.bestScore$;
+    }
+
+    private updateBestScore() {
+        if (this.bestScoreNum < this.scoreNum) {
+            this.bestScoreNum = this.scoreNum;
+            this.bestScore.next(this.scoreNum);
         }
     }
 
-    private getBestScoreFromStorage(): number {
-        const score = this.getFromLocalStorage(this.bestScore);
-        if (score == null) {
-            this.initScore(0);
-            return 0;
-        }
-        return score;
+    private initBestScore(value: number) {
+        this.setToLocalStorage(this.bestScoreKey, value);
     }
 
-    private initScore(value: number) {
-        this.setToLocalStorage(this.bestScore, value);
-    }
     private setToLocalStorage(key: string, data: any) {
         localStorage.setItem(key, JSON.stringify({ key: data }));
     }

@@ -1,4 +1,7 @@
-<div class="board" [ngClass]="{ 'game-over': gameOver }">
+<div *ngIf="gameOver" class="gameover">
+    GAME OVER
+</div>
+<div class="board" [ngClass]="{'gameover': gameOver}">
     <div class="row" *ngFor="let row of board.data; let i = index">
         <div
             *ngFor="let cell of row; let j = index"

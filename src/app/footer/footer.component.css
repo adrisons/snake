@@ -5,3 +5,15 @@
     height: 100%;
     background-color: rgba(212, 175, 254, 0.2);
 }
+button {
+    width: 100%;
+    background: transparent;
+    color: var(--color-light-vanilla);
+    border: none;
+    cursor: pointer;
+    padding: 1em;
+}
+button:hover {
+    background-color: var(--color-snake);
+    color: var(--color-dark-purple);
+}

@@ -2,6 +2,7 @@
     <h1>Snake</h1>
 
     <div class="score-block">
-        <span class="score">Score: {{ score }}</span>
+        <span class="score">Score: {{ score | async }}</span>
+        <span class="best-score">Record: {{ bestScore | async }}</span>
     </div>
 </div>

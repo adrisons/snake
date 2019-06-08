@@ -62,21 +62,27 @@ export class BoardComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe(over => {
                 this.gameOver = over;
+                if (!over) {
+                    this.init();
+                }
             });
     }
 
-    ngOnInit() {
+    ngOnInit() {}
+
+    ngOnDestroy() {
+        this.destroy.next(true);
+    }
+
+    init() {
+        this.board = this.buildBoard(BOARD_SIZE, BOARD_SIZE);
+        this.tempDirection = CONTROLS.UP;
         this.snake.parts = this.findSnake();
         this.resetFruit();
         setTimeout(() => {
             this.move();
         }, this.interval);
     }
-
-    ngOnDestroy() {
-        this.destroy.next(true);
-    }
-
     private buildBoard(rows: number, cols: number): Board {
         return new Board(rows, cols);
     }

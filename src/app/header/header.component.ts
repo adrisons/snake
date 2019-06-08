@@ -1,26 +1,23 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GameService } from '../game.service';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-    score: number;
+export class HeaderComponent implements OnInit {
+    score: Observable<number>;
+    bestScore: Observable<number>;
     gameEnded: Observable<boolean>;
 
-    constructor(private gameService: GameService) {
+    constructor(gameService: GameService) {
         this.gameEnded = gameService.isGameOver();
-        gameService
-            .getScore()
-            // .pipe(takeUntil(this.gameEnded))
-            .subscribe(score => (this.score = score));
+        this.score = gameService.getScore();
+
+        this.bestScore = gameService.getBestScore();
     }
 
     ngOnInit() {}
-
-    ngOnDestroy(): void {}
 }
