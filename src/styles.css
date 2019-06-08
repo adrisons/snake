@@ -4,8 +4,8 @@
     --color-snake: #00c9aa;
     --color-light-purple: #d4affe;
     --color-light-vanilla: #fffade;
-    --board-width: 40em;
-    --board-height: 40em;
+    --board-width: calc(100vw / 1.5);
+    --board-height: calc(100vh - 135px);
     --row-cells: 18;
 }
 
@@ -40,6 +40,6 @@ app-footer {
 @media screen and (max-width: 650px) {
     :root {
         --board-width: 100vw;
-        --board-height: calc(100vw - 80px);
+        --board-height: calc(100vh - 135px);
     }
 }
