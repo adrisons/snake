@@ -43,12 +43,12 @@ Visit http://localhost:4200 and play!
 ## TODO
 
 -   Game
-    _ Different Levels
-    _ Increase speed with time
-    _ Obstacles
-    _ Multiple Fruits
+    -   Different Levels
+    -   Increase speed with time
+    -   Obstacles
+    -   Multiple Fruits
 -   Update UI
-    _ Introduce controls for mobile devices
+    -   Introduce controls for mobile devices
 -   Write tests
 
 
