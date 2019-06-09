@@ -1,27 +1,61 @@
 # Snake
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.2.
+[![build-url][build-url-svg]][build-url]
+[![Dependencies][dependencies]][dependencies-url]
+[![Dev Dependencies][dev-dependencies]][dev-dependencies-url]
 
-## Development server
+> Snake is simple Snake arcade game implemented in Angular 8
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+#### Demo
 
-## Code scaffolding
+https://adrisons.github.io/snake/
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+#### Controls
 
-## Build
+UP, DOWN, LEFT, RIGHT - to control snake
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Setup
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+$ npm install -g @angular/cli@latest
+```
 
-## Running end-to-end tests
+Clone this repo in your favourite shell:
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+```bash
+$ git clone https://github.com/adrisons/snake.git
+```
 
-## Further help
+Install the npm packages described in the package.json:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```bash
+$ npm install
+```
+
+Transpile typescript into javascript, host the app and monitor the changes:
+
+```bash
+$ ng serve
+```
+
+Visit http://localhost:4200 and play!
+
+## TODO
+
+-   Game
+    _ Different Levels
+    _ Increase speed with time
+    _ Obstacles
+    _ Multiple Fruits
+-   Update UI
+    _ Introduce controls for mobile devices
+-   Write tests
+
+
+[dependencies]: https://david-dm.org/adrisons/snake.svg
+[dependencies-url]: https://david-dm.org/adrisons/snake
+[dev-dependencies]: https://david-dm.org/adrisons/snake/dev-status.svg
+[dev-dependencies-url]: https://david-dm.org/adrisons/snake?type=dev
+[build-url]: https://travis-ci.org/adrisons/snake
+[build-url-svg]: https://travis-ci.org/adrisons/snake.svg?branch=master
