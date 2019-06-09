@@ -1,6 +1,5 @@
 # Snake
 
-[![build-url][build-url-svg]][build-url]
 [![Dependencies][dependencies]][dependencies-url]
 [![Dev Dependencies][dev-dependencies]][dev-dependencies-url]
 
@@ -57,5 +56,3 @@ Visit http://localhost:4200 and play!
 [dependencies-url]: https://david-dm.org/adrisons/snake
 [dev-dependencies]: https://david-dm.org/adrisons/snake/dev-status.svg
 [dev-dependencies-url]: https://david-dm.org/adrisons/snake?type=dev
-[build-url]: https://travis-ci.org/adrisons/snake
-[build-url-svg]: https://travis-ci.org/adrisons/snake.svg?branch=master
